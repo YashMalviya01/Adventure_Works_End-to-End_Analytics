@@ -1,114 +1,55 @@
-# 🚴 AdventureWorks Sales Analytics & Business Intelligence Dashboard
+# 🚴 AdventureWorks Sales Analytics & BI Dashboard
 
+## What this project is
 
-# 📌 Project Overview
+An end-to-end Tableau BI build on the Microsoft AdventureWorks dataset — three executive dashboards covering revenue, profitability, territory, and customer performance.
 
-The **AdventureWorks Sales Analytics Dashboard** is a complete end-to-end Business Intelligence project developed using **Tableau Public** and the **Microsoft AdventureWorks dataset**.
+The short version of what I found:
 
-This project transforms raw business data into interactive executive dashboards that provide actionable insights into:
+- **Offline sales dominate** — $80.49M vs. $29.36M online, meaning offline made up nearly **73% of total revenue**.
+- **Australia is the most profitable territory** ($3.43M profit) — but profitability doesn't track revenue everywhere: the Northeast generated revenue while still posting a **net loss of -$0.27M**, which is a different problem than "low sales."
+- **Bikes carry the business**: $94.65M of the $109.85M total revenue — Components ($11.80M), Clothing ($2.12M), and Accessories ($1.27M) are a distant second, third, and fourth.
+- **Revenue is customer-concentrated**: a small group of top customers accounts for a disproportionate share of total revenue (the top customer alone placed 116 orders).
 
-- Revenue Performance
-- Profitability Analysis
-- Customer Insights
-- Territory Performance
-- Sales Channel Analysis
-- Product Intelligence
-
-The project was designed with a professional executive reporting approach focusing on:
-- Data Storytelling
-- Dashboard Design
-- Business KPIs
-- Analytical Decision-Making
-- Executive-Level Visualization
+Everything below is how I got there.
 
 ---
 
-# 🎯 Business Problem
-
-Businesses often struggle to:
-- Track revenue growth efficiently
-- Identify profitable territories
-- Analyze declining sales trends
-- Understand customer contribution
-- Compare sales channels performance
-- Monitor category-level profitability
-
-This dashboard solves these challenges by providing centralized and interactive business insights.
-
----
-
-# 🛠️ Tech Stack
-
-| Tool / Technology | Purpose |
-|-------------------|---------|
-| Tableau Public | Dashboard Development |
-| CSV Datasets | Data Source |
-| AdventureWorks Dataset | Business Data |
-| Data Visualization | Executive Reporting |
-| Business Analytics | KPI & Trend Analysis |
-
----
-
-# 📂 Project Structure
-
-```bash
-AdventureWorks-Sales-Analytics/
-│
-├── datasets/
-│   ├── monthly_sales_final.csv
-│   ├── online_offline_final.csv
-│   ├── profit_margin_final.csv
-│   ├── territory_performance_final.csv
-│   ├── top_customers_final.csv
-│   └── top_product_final.csv
-│
-├── dashboard_screenshots/
-│
-├── README.md
-│
-└── Tableau_Workbook/
-    └── AdventureWorks_Dashboard.twb
-```
-
----
-
-# 📊 Dashboard Collection
-
-# 1️⃣ Executive Sales Performance Dashboard
-
-### Dashboard Focus
-Executive-level KPI tracking and revenue performance monitoring.
-
-## Key KPIs
+## Headline numbers
 
 | KPI | Value |
-|-----|------|
+|---|---|
 | Total Revenue | $109.85M |
 | Total Profit | $9.37M |
-| Average Order Value | 3.49K |
-| Top Customer Orders | 116 |
-
-## Visualizations Included
-- Monthly Revenue Trend
-- Cumulative Revenue Growth
-- Online vs Offline Sales Analysis
+| Average Order Value | $3.49K |
+| Top Customer — Orders | 116 |
 
 ---
 
-# 2️⃣ Product & Profit Intelligence Dashboard
+## Territory profitability
 
-### Dashboard Focus
-Product category performance and profitability intelligence.
+| Territory | Profit |
+|---|---|
+| Australia | $3.43M |
+| Southwest | $1.56M |
+| Northwest | $1.36M |
+| United Kingdom | $1.23M |
+| Germany | $1.04M |
+| Northeast | **-$0.27M** |
 
-## Visualizations Included
-- Top Product Categories by Revenue
-- Revenue vs Profit Margin Analysis
-- Revenue Decline Analysis
+The Northeast line is the one worth a second look — it's proof this isn't just a "which region sells the most" dashboard, it's a "which region is actually profitable" one.
 
-## Business Insights
+---
+
+## Sales channel & category breakdown
+
+| Channel | Revenue |
+|---|---|
+| Offline | $80.49M |
+| Online | $29.36M |
 
 | Category | Revenue |
-|----------|---------|
+|---|---|
 | Bikes | $94.65M |
 | Components | $11.80M |
 | Clothing | $2.12M |
@@ -116,56 +57,15 @@ Product category performance and profitability intelligence.
 
 ---
 
-# 3️⃣ Global Sales & Customer Insights Dashboard
+## The analysis logic behind it
 
-### Dashboard Focus
-Territory performance, customer contribution, and global sales insights.
-
-## Visualizations Included
-- Global Revenue & Profit Map
-- Territory Profitability Analysis
-- Top Revenue Territories
-- Customer Revenue Contribution Treemap
-- Online vs Offline Revenue Comparison
-
----
-
-# 🌍 Territory Profitability Analysis
-
-| Territory | Profit |
-|-----------|--------|
-| Australia | $3.43M |
-| Southwest | $1.56M |
-| Northwest | $1.36M |
-| United Kingdom | $1.23M |
-| Germany | $1.04M |
-| Northeast | -$0.27M |
-
----
-
-# 📈 Revenue Channel Comparison
-
-| Sales Channel | Revenue |
-|---------------|---------|
-| Offline Sales | $80.49M |
-| Online Sales | $29.36M |
-
----
-
-# 🔍 Sample Business Analysis Logic
-
-## Revenue Calculation
-
+**Total revenue:**
 ```sql
-SELECT 
-    SUM(SalesAmount) AS Total_Revenue
+SELECT SUM(SalesAmount) AS Total_Revenue
 FROM FactInternetSales;
 ```
 
----
-
-## Profit Margin Analysis
-
+**Profit margin by category:**
 ```sql
 SELECT 
     ProductCategory,
@@ -177,14 +77,9 @@ GROUP BY ProductCategory
 ORDER BY Profit_Margin DESC;
 ```
 
----
-
-## Monthly Revenue Trend
-
+**Monthly revenue trend** (used to catch seasonal drops):
 ```sql
-SELECT
-    OrderMonth,
-    SUM(Revenue) AS Monthly_Revenue
+SELECT OrderMonth, SUM(Revenue) AS Monthly_Revenue
 FROM Sales_Data
 GROUP BY OrderMonth
 ORDER BY Monthly_Revenue DESC;
@@ -192,134 +87,46 @@ ORDER BY Monthly_Revenue DESC;
 
 ---
 
-# 📌 Key Business Insights
+## The three dashboards
 
-## 🔹 Sales Channel Analysis
-- Offline sales generated significantly higher revenue than online sales.
-- Offline channel contributed nearly 73% of total revenue.
+**1. Executive Sales Performance** — revenue, profit, AOV, and top-customer KPIs, with monthly revenue trend, cumulative growth, and online vs. offline breakdown.
 
----
+**2. Product & Profit Intelligence** — category revenue vs. margin, and revenue-decline detection to flag seasonal slowdowns. This is where the "Bikes dominates revenue" finding comes from.
 
-## 🔹 Territory Insights
-- Australia emerged as the most profitable territory.
-- Certain regions generated revenue but suffered negative profitability.
+<img width="2038" height="1318" alt="Product Intelligence Dashboard" src="https://github.com/user-attachments/assets/99e21944-1412-4574-8556-ffe38df1bf53" />
 
----
+<img width="1898" height="1198" alt="Product & Profit Intelligence Dashboard" src="https://github.com/user-attachments/assets/c318c82f-1380-4098-9335-af3b602c4684" />
 
-## 🔹 Product Intelligence
-- Bikes category dominated total revenue contribution.
-- Accessories and Clothing contributed comparatively lower revenue.
+**3. Global Sales & Customer Insights** — territory profit map, customer revenue treemap (this is where the "small customer segment, disproportionate revenue" finding comes from), and channel comparison.
 
-- <img width="2038" height="1318" alt="image" src="https://github.com/user-attachments/assets/99e21944-1412-4574-8556-ffe38df1bf53" />
-
+<img width="2238" height="1198" alt="Global Sales & Customer Insights Dashboard" src="https://github.com/user-attachments/assets/336245db-d189-4e80-97cc-1f2cf112f80c" />
 
 ---
 
-## 🔹 Revenue Decline Detection
-- Certain months experienced significant revenue drops.
-- Revenue decline analysis helps identify seasonal slowdowns.
+## Repo structure
 
-<img width="1898" height="1198" alt="Product   Profit Intelligence Dashboard" src="https://github.com/user-attachments/assets/c318c82f-1380-4098-9335-af3b602c4684" />
-
----
-
-## 🔹 Customer Contribution Analysis
-- A small segment of customers contributed disproportionately high revenue.
-- Treemap visualization helped identify high-value customers quickly.
-
-<img width="2238" height="1198" alt="Global Sales   Customer Insights Dashboard" src="https://github.com/user-attachments/assets/336245db-d189-4e80-97cc-1f2cf112f80c" />
-
----
-
-# 🎨 Dashboard Design Principles
-
-The dashboards were designed using:
-- Minimal executive-style layout
-- Soft neutral color palette
-- Consistent KPI formatting
-- Visual hierarchy
-- Interactive storytelling
-- Business-focused chart selection
+```bash
+AdventureWorks-Sales-Analytics/
+├── datasets/
+│   ├── monthly_sales_final.csv
+│   ├── online_offline_final.csv
+│   ├── profit_margin_final.csv
+│   ├── territory_performance_final.csv
+│   ├── top_customers_final.csv
+│   └── top_product_final.csv
+├── dashboard_screenshots/
+└── Tableau_Workbook/AdventureWorks_Dashboard.twb
+```
 
 ---
 
-# 🚀 Skills Demonstrated
+## What I'd add next
 
-## Data Analytics
-- Revenue Analysis
-- Profitability Analysis
-- Customer Analytics
-- Trend Analysis
-
-## Tableau Skills
-- Dashboard Design
-- KPI Cards
-- Geographic Maps
-- Treemaps
-- Scatter Plots
-- Interactive Visualizations
-
-## Business Intelligence
-- Executive Reporting
-- Data Storytelling
-- Business KPI Monitoring
-- Performance Benchmarking
+Interactive filters/parameters, a forecasting layer on the monthly trend, a live SQL database connection instead of static CSVs, and a proper customer segmentation model (RFM or similar) to formalize the "small segment, big revenue" finding above rather than leaving it qualitative.
 
 ---
 
-# 📸 Dashboard Preview
+## Author
 
-## Executive Sales Performance Dashboard
-(Add Screenshot Here)
-
----
-
-## Product & Profit Intelligence Dashboard
-(Add Screenshot Here)
-
----
-
-## Global Sales & Customer Insights Dashboard
-(Add Screenshot Here)
-
----
-
-# 🔗 Tableau Public Dashboard
-
-(Add Tableau Public Link Here)
-
----
-
-# 💡 Future Improvements
-
-- Add interactive filters & parameters
-- Add forecasting models
-- Integrate SQL database connection
-- Deploy dashboards on cloud BI platform
-- Add customer segmentation analysis
-
----
-
-# 👨‍💻 Author
-
-# Yash Malviya
-
-Aspiring Data Analyst passionate about:
-- Business Intelligence
-- Data Analytics
-- Dashboard Development
-- Data Storytelling
-- Data Visualization
-
----
-
-# ⭐ Project Outcome
-
-This project demonstrates the ability to transform raw business data into executive-level business insights using Tableau and modern Business Intelligence techniques.
-
-The dashboards were developed with a strong focus on:
-- analytical thinking,
-- storytelling,
-- professional dashboard design,
-- and business decision-making support.
-
+**Yash Malviya** — Data Analyst | Tableau · SQL · Business Intelligence
+[LinkedIn](https://www.linkedin.com/in/yash-malviya-03433b258/) · [GitHub](https://github.com/YashMalviya01)
