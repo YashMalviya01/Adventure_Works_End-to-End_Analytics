@@ -91,9 +91,9 @@ ORDER BY Monthly_Revenue DESC;
 
 **1. Executive Sales Performance** — revenue, profit, AOV, and top-customer KPIs, with monthly revenue trend, cumulative growth, and online vs. offline breakdown.
 
-**2. Product & Profit Intelligence** — category revenue vs. margin, and revenue-decline detection to flag seasonal slowdowns. This is where the "Bikes dominates revenue" finding comes from.
-
 <img width="2038" height="1318" alt="Product Intelligence Dashboard" src="https://github.com/user-attachments/assets/99e21944-1412-4574-8556-ffe38df1bf53" />
+
+**2. Product & Profit Intelligence** — category revenue vs. margin, and revenue-decline detection to flag seasonal slowdowns. This is where the "Bikes dominates revenue" finding comes from.
 
 <img width="1898" height="1198" alt="Product & Profit Intelligence Dashboard" src="https://github.com/user-attachments/assets/c318c82f-1380-4098-9335-af3b602c4684" />
 
@@ -129,4 +129,4 @@ Interactive filters/parameters, a forecasting layer on the monthly trend, a live
 ## Author
 
 **Yash Malviya** — Data Analyst | Tableau · SQL · Business Intelligence
-[LinkedIn](https://www.linkedin.com/in/yash-malviya-03433b258/) · [GitHub](https://github.com/YashMalviya01)
+[LinkedIn](https://www.linkedin.com/in/yash-malviya-03433b258/) · [GitHub](https://github.com/YashMalviya01) . [Tableau](https://public.tableau.com/app/profile/yash.malviya6387/vizzes)
